@@ -1,0 +1,67 @@
+version: '3.7'
+
+services:
+  zookeeper:
+    build:
+      context: ./build
+    image: myzoo:1.0
+    container_name: zk01
+    domainname: lab.com
+    hostname: zk01
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=zk01:2888:3888 server.2=zk02:2888:3888 server.3=zk03:2888:3888
+    volumes:
+      - type: volume
+        source: zk01-data
+        target: /data
+    ports:
+      - target: 8080
+        published: 8081
+        protocol: tcp 
+    networks:
+      - sub-net
+  zookeeper2:
+    image: myzoo:1.0
+    container_name: zk02
+    domainname: lab.com
+    hostname: zk02
+    environment:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=zk01:2888:3888 server.2=zk02:2888:3888 server.3=zk03:2888:3888
+    volumes:
+      - type: volume
+        source: zk02-data
+        target: /data
+    ports:
+      - target: 8080
+        published: 8082
+        protocol: tcp 
+    networks:
+      - sub-net
+  zookeeper3:
+    image: myzoo:1.0
+    container_name: zk03
+    domainname: lab.com
+    hostname: zk03
+    environment:
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: server.1=zk01:2888:3888 server.2=zk02:2888:3888 server.3=zk03:2888:3888
+    volumes:
+      - type: volume
+        source: zk03-data
+        target: /data
+    ports:
+      - target: 8080
+        published: 8083
+        protocol: tcp 
+    networks:
+      - sub-net
+
+volumes:
+  zk01-data:
+  zk02-data:
+  zk03-data:
+
+networks:
+  sub-net:

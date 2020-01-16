@@ -1,0 +1,17 @@
+---
+# defaults file for zookeeper
+# unique id for zookeeper user and group
+zookeeper_user:
+  uid: 996
+  gid: 993
+# installation of zookeeper
+zookeeper_version: 3.5.6
+zookeeper_tarball_checksum: md5:CC6A1D11129E8330141B756625BFDBA0
+# zookeeper settings
+zookeeper_tick_time: 2000
+zookeeper_init_limit: 5
+zookeeper_sync_limit: 2
+zookeeper_autopurge_purgeinterval: 1
+zookeeper_autopurge_snapretaincount: 3
+zookeeper_max_client_cnxns: 60
+zookeeper_jvm_heap_size: 1024

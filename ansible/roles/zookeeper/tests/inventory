@@ -1,0 +1,4 @@
+[zookeeper_ensemble]
+znode1 ansible_host=192.168.33.11 ansible_user=vagrant ansible_ssh_private_key_file=./.vagrant/machines/znode1/virtualbox/private_key
+znode2 ansible_host=192.168.33.12 ansible_user=vagrant ansible_ssh_private_key_file=./.vagrant/machines/znode2/virtualbox/private_key
+znode3 ansible_host=192.168.33.13 ansible_user=vagrant ansible_ssh_private_key_file=./.vagrant/machines/znode3/virtualbox/private_key

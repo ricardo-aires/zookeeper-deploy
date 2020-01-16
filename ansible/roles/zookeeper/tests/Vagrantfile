@@ -1,0 +1,19 @@
+Vagrant.configure("2") do |config|
+
+  config.vm.box = "centos/7"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.gui = false
+    vb.cpus = 1
+    vb.memory = 4096
+    vb.customize ["modifyvm", :id, "--audio", "none"]
+  end
+
+(1..3).each do |i|
+    config.vm.define "znode#{i}" do |node|
+        node.vm.hostname = "znode#{i}.lab.com"
+        node.vm.network "private_network", ip: "192.168.33.1#{i}"
+    end
+end
+
+end

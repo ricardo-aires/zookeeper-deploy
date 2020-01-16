@@ -1,0 +1,16 @@
+---
+# vars file for zookeeper
+# installation of zookeeper
+zookeeper_dependecies: 
+  - java-1.8.0-openjdk
+  - bash
+zookeeper_short_distro_name: "zookeeper-{{ zookeeper_version }}"
+zookeeper_distro_name: "apache-{{ zookeeper_short_distro_name }}-bin"
+zookeeper_mirror: http://apache-mirror.rbc.ru/pub/apache/zookeeper
+zookeeper_tarball: "{{ zookeeper_distro_name }}.tar.gz"
+zookeeper_tarball_url: "{{ zookeeper_mirror }}/{{ zookeeper_short_distro_name }}/{{ zookeeper_tarball }}"
+# directories for zookeeper
+zookeeper_home_dir: "/opt/{{ zookeeper_distro_name }}"
+zookeeper_conf_dir: "{{ zookeeper_home_dir }}/conf"
+zookeeper_data_dir: /var/lib/zookeeper/data
+zookeeper_data_log_dir: /var/lib/zookeeper/datalog

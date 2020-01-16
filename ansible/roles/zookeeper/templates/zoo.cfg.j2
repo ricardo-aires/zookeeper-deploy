@@ -1,0 +1,30 @@
+# The number of milliseconds of each tick
+tickTime={{zookeeper_tick_time}}
+# The number of ticks that the initial
+# synchronization phase can take
+initLimit={{zookeeper_init_limit}}
+# The number of ticks that can pass between
+# sending a request and getting an acknowledgement
+syncLimit={{zookeeper_sync_limit}}
+# the directory where the snapshot is stored.
+# do not use /tmp for storage, /tmp here is just
+# example sakes.
+dataDir={{zookeeper_data_dir}}
+# This option will direct the machine to write 
+# the transaction log to the dataLogDir rather 
+# than the dataDir
+dataLogDir={{zookeeper_data_log_dir}}
+# the port at which the clients will connect
+clientPort=2181
+# the maximum number of client connections.
+# increase this if you need to handle more clients
+#maxClientCnxns={{zookeeper_max_client_cnxns}}
+# The number of snapshots to retain in dataDir
+autopurge.snapRetainCount={{zookeeper_autopurge_snapretaincount}}
+# Purge task interval in hours
+# Set to "0" to disable auto purge feature
+autopurge.purgeInterval={{zookeeper_autopurge_purgeinterval}}
+# list of servers making up the ZooKeeper ensemble
+{% for host in groups['zookeeper_ensemble'] %}
+server.{{ loop.index }}={{ hostvars[host]['ansible_facts']['eth1']['ipv4']['address'] }}:2888:3888
+{% endfor %}%
