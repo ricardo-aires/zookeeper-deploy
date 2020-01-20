@@ -7,8 +7,7 @@
 For this project we will be using the latest stable release [3.5.6](https://zookeeper.apache.org/doc/r3.5.6) and create the next deployment methods.
 
 - [Ansible](ansible/roles/zookeeper/README.md)
-- Docker
-- Kubernetes
+- [Docker/Kubernetes](container/README.md)
 
 ## Considerations
 
