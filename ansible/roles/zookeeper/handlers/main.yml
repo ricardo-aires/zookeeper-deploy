@@ -6,4 +6,3 @@
     state: restarted
     enabled: yes
     daemon_reload: yes
-  when: "'active' in zookeeper_service.status.ActiveState"

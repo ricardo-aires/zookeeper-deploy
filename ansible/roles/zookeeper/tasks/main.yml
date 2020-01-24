@@ -91,10 +91,12 @@
     mode: '0644'
   notify: restart zookeeper service
 
+- name: Force all notified handlers to run at this point
+  meta: flush_handlers
+
 - name: ensure zookeeper service is enabled and started
   service:
     name: zookeeper
     state: started
     enabled: yes
     daemon_reload: yes
-  register: zookeeper_service
