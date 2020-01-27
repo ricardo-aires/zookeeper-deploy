@@ -1,7 +1,14 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kafka-k8s
+---
 apiVersion: v1
 kind: Service
 metadata:
   name: zk-hs
+  namespace: kafka-k8s
   labels:
     app: zk
 spec:
@@ -13,6 +20,9 @@ spec:
   - port: 3888
     protocol: TCP
     name: leader-election
+  - port: 2181
+    protocol: TCP
+    name: client
   selector:
     app: zk
 ---
@@ -20,6 +30,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: zk-cs
+  namespace: kafka-k8s
   labels:
     app: zk
 spec:
@@ -30,6 +41,9 @@ spec:
   - port: 8080
     protocol: TCP
     name: admin
+  type: LoadBalancer
+  selector:
+    app: zk
 ---
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
@@ -45,6 +59,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: zk
+  namespace: kafka-k8s
 spec:
   selector:
     matchLabels:
@@ -62,9 +77,12 @@ spec:
       containers:
       - name: k8s-zookeeper
         imagePullPolicy: IfNotPresent
-        image: "zoo:latest"
+        image: "myzoo:1.0"
         resources:
           requests:
+            memory: "2Gi"
+            cpu: "0.5"
+          limits:
             memory: "3Gi"
             cpu: "0.5"
         env:
