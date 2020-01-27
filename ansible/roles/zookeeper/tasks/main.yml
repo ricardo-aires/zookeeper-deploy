@@ -4,8 +4,6 @@
   package:
     name: "{{ zookeeper_dependecies }}"
     state: present
-  with_items:
-    - zookeeper_dependecies
 
 - name: ensure group zookeeper exists
   group:
