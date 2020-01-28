@@ -79,6 +79,7 @@
     owner: zookeeper
     group: zookeeper
     mode: '0440'
+  notify: restart zookeeper service
 
 - name: setup systemctl zookeeper service
   template:
