@@ -1,4 +1,3 @@
-# FROM gcr.io/gcp-runtimes/centos7
 FROM openjdk:8
 
 ARG MIRROR=http://apache-mirror.rbc.ru/pub/apache/zookeeper
