@@ -1,8 +1,9 @@
 ---
-- hosts: all
+- name: deploy zookeeper
+  hosts: zookeeper_ensemble
   become: true
 
   tasks:
     - name: apply zookeeper role
-      include_role:
+      import_role:
         name: zookeeper
