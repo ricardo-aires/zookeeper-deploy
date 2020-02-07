@@ -25,7 +25,7 @@ The [Ansible modules](https://docs.ansible.com/ansible/2.9/modules/modules_by_ca
 
 The next variables are set in [defaults](./defaults/main.yml) in order to be [easily overwrite](https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable) and fetch a different version:
 
-- `zookeeper_user`: to setup `uid` and `gid` for the `zookeeper` user.
+- `zookeeper_user`: to setup details for the `zookeeper` user.
 - `zookeeper_version`: version of the ZooKeeper to be installed.
 - `zookeeper_tarball_checksum`: if a different version is needed.
 
@@ -37,7 +37,8 @@ Some of the [ZooKeeper settings](https://zookeeper.apache.org/doc/r3.5.6/zookeep
 - `zookeeper_autopurge_purgeinterval`: the time interval in hours for which the purge task has to be triggered.
 - `zookeeper_autopurge_snapretaincount`: number of most recent snapshots and the corresponding transaction logs in the dataDir and dataLogDir to keep.
 - `zookeeper_max_client_cnxns`: number of concurrent connections (at the socket level) that a single client, identified by IP address, may make to a single member of the ZooKeeper ensemble.
-- `zookeeper_jvm_heap_size`: Heap Size to be set to the ZooKeeper Server.
+- `zookeeper_jvm_heap_size`: Heap Size to be set to the ZooKeeper service.
+- `zookeeper_nofile`: Setup the max open files for the ZooKeeper service.
 
 Other variables are available in [vars](vars/main.yml), usually don't need to be changed, unless we have a need to use a different mirror, for example.
 

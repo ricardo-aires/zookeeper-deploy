@@ -1,19 +1,20 @@
 [Unit]
-Description=Zookeeper Daemon
+Description=Apache ZooKeeper
 Documentation=http://zookeeper.apache.org
 Requires=network.target
 After=network.target
 
-[Service]    
+[Service]
 Type=forking
-User=zookeeper
-Group=zookeeper
+User={{ zookeeper_user.username }}
+Group={{ zookeeper_user.group }}
+LimitNOFILE={{ zookeeper_nofile }}
 WorkingDirectory={{zookeeper_home_dir}}
 Environment="ZK_SERVER_HEAP={{ zookeeper_jvm_heap_size }}"
 ExecStart={{zookeeper_home_dir}}/bin/zkServer.sh start
 ExecStop={{zookeeper_home_dir}}/bin/zkServer.sh stop
 ExecReload={{zookeeper_home_dir}}/bin/zkServer.sh restart
-TimeoutSec=30
+TimeoutSec=180
 Restart=on-failure
 
 [Install]

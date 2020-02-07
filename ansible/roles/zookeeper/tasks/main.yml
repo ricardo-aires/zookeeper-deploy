@@ -7,16 +7,19 @@
 
 - name: ensure group zookeeper exists
   group:
-    name: zookeeper
+    name: "{{ zookeeper_user.group }}"
     gid: "{{ zookeeper_user.gid }}"
     state: present
 
 - name: ensure user zookeeper exists
   user:
-    name: zookeeper
-    group: zookeeper
+    name: "{{ zookeeper_user.username }}"
+    group: "{{ zookeeper_user.group }}"
     uid: "{{ zookeeper_user.uid }}"
-    comment: Zookeeper
+    comment: "{{ zookeeper_user.comment }}"
+    create_home: no
+    shell: /sbin/nologin
+    system: yes
     state: present
 
 - name: ensure /opt directory exist
@@ -30,8 +33,8 @@
 - name: ensure necessary directories exist
   file:
     path: "{{ item }}"
-    owner: zookeeper
-    group: zookeeper
+    owner: "{{ zookeeper_user.username }}"
+    group: "{{ zookeeper_user.group }}"
     mode: '0750'
     state: directory
   loop:
@@ -42,8 +45,8 @@
   get_url:
     url: "{{ zookeeper_tarball_url }}"
     dest: "/opt/{{ zookeeper_tarball }}"
-    owner: zookeeper
-    group: zookeeper
+    owner: "{{ zookeeper_user.username }}"
+    group: "{{ zookeeper_user.group }}"
     mode: '0440'
     checksum: "{{ zookeeper_tarball_checksum }}"
 
@@ -51,24 +54,24 @@
   unarchive:
     src: "/opt/{{ zookeeper_tarball }}"
     dest: /opt
-    owner: zookeeper
-    group: zookeeper
+    owner: "{{ zookeeper_user.username }}"
+    group: "{{ zookeeper_user.group }}"
     remote_src: yes
   notify: restart zookeeper service
 
 - name: fix permissions after extract
   file:
     path: "{{ zookeeper_home_dir }}"
-    owner: zookeeper
-    group: zookeeper
+    owner: "{{ zookeeper_user.username }}"
+    group: "{{ zookeeper_user.group }}"
     recurse: yes
 
 - name: ensure setup file is in-place
   template:
     src: zoo.cfg.j2
     dest: "{{ zookeeper_conf_dir}}/zoo.cfg"
-    owner: zookeeper
-    group: zookeeper
+    owner: "{{ zookeeper_user.username }}"
+    group: "{{ zookeeper_user.group }}"
     mode: '0640'
   notify: restart zookeeper service
 
@@ -76,8 +79,8 @@
   template:
     src: myid.j2
     dest: "{{ zookeeper_data_dir }}/myid"
-    owner: zookeeper
-    group: zookeeper
+    owner: "{{ zookeeper_user.username }}"
+    group: "{{ zookeeper_user.group }}"
     mode: '0440'
   notify: restart zookeeper service
 
