@@ -25,15 +25,15 @@ if [[ ! -f "$ZOOCFGDIR/zoo.cfg" ]]; then
         do
             echo "server.$i=$PREFIX$((i-1)).$DOMAIN:2888:3888" >> "$CONFIG"
         done
+        echo "quorumListenOnAllIPs=true" >> "$CONFIG"
     fi
 
     for server in $ZOO_SERVERS; do
         echo "$server" >> "$CONFIG"
     done
 
-    if [[ -n $ZOO_4LW_COMMANDS_WHITELIST ]]; then
-        echo "4lw.commands.whitelist=$ZOO_4LW_COMMANDS_WHITELIST" >> "$CONFIG"
-    fi
+    echo "4lw.commands.whitelist=${ZOO_4LW_COMMANDS_WHITELIST:-*}" >> "$CONFIG"
+
 
 fi
 
