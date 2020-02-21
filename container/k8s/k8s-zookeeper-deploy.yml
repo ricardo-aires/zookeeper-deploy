@@ -7,70 +7,73 @@ metadata:
 apiVersion: v1
 kind: Service
 metadata:
-  name: zk-hs
+  name: zookeeper-headless
   namespace: zookeeper
   labels:
-    app: zk
+    app: zookeeper
 spec:
+  type: ClusterIP
   clusterIP: None
   ports:
-  - port: 2888
+  - name: tcp-peers
+    port: 2888
     protocol: TCP
-    name: peer-comms
-  - port: 3888
+    targetPort: tcp-peers
+  - name: tcp-leader
+    port: 3888
     protocol: TCP
-    name: leader-election
-  - port: 2181
-    protocol: TCP
-    name: client
+    targetPort: tcp-leader
   selector:
-    app: zk
+    app: zookeeper
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: zk-cs
-  namespace: zookeeper
+  name: zookeeper
   labels:
-    app: zk
+    app: zookeeper
 spec:
   ports:
-  - port: 8080
+  - name: http-admin
+    port: 8080
     protocol: TCP
-    name: admin
-  type: LoadBalancer
+    targetPort: http-admin
+  - name: tcp-client
+    port: 2181
+    protocol: TCP
+    targetPort: tcp-client
   selector:
-    app: zk
+    app: zookeeper
 ---
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
-  name: zk-pdb
+  name: zookeeper-pdb
   namespace: zookeeper
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
-      app: zk
+      app: zookeeper
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: zk
+  name: zookeeper
   namespace: zookeeper
 spec:
   selector:
     matchLabels:
-      app: zk
-  serviceName: zk-hs
-  replicas: 6
+      app: zookeeper
+  serviceName: zookeeper-headless
+  replicas: 3
   updateStrategy:
     type: RollingUpdate
   podManagementPolicy: OrderedReady
   template:
     metadata:
       labels:
-        app: zk
+        app: zookeeper
     spec:
       containers:
       - name: zookeeper
@@ -85,16 +88,16 @@ spec:
             cpu: "0.5"
         env:
         - name: K8S_ZOO_REPLICAS
-          value: "6"
+          value: "3"
         ports:
-        - containerPort: 2181
-          name: client
-        - containerPort: 2888
-          name: peer-comms
-        - containerPort: 3888
-          name: leader-election
-        - containerPort: 8080
-          name: admin
+        - name: tcp-client
+          containerPort: 2181
+        - name: tcp-peers
+          containerPort: 2888
+        - name: tcp-leader
+          containerPort: 3888
+        - name: http-admin
+          containerPort: 8080
         volumeMounts:
         - name: datadir
           mountPath: /data
